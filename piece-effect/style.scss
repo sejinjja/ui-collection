@@ -1,0 +1,52 @@
+@use 'sass:math';
+
+$pieceX: 15;
+$pieceY: 10;
+$pieces: $pieceX * $pieceY;
+
+html, body {
+  width: 100%;
+  height: 100%;
+}
+
+body {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.frame {
+  width: 300px;
+  height: 200px;
+  display: grid;
+  grid-template-columns: repeat($pieceX, 1fr);
+  grid-template-rows: repeat($pieceY, 1fr);
+
+  .piece {
+    width: 100%;
+    height: 100%;
+    background-image: url("https://picsum.photos/300/200");
+    background-size: percentage($pieceX) percentage($pieceY);
+    transition: transform (math.random()  + 0.5) * 1s;
+
+    @for $idx from 1 through $pieces {
+      &:nth-of-type(#{$idx}) {
+        background-position:
+                percentage(math.div(($idx - 1) % $pieceX, $pieceX - 1))
+                percentage(math.div(floor(math.div($idx - 1, $pieceX)), $pieceY - 1));
+        transform: translateX( ( math.random() * 100 - 50 ) * 10%)
+                    translateY( ( math.random() * 100 - 25 ) * 10%)
+                    rotate(math.random() * 1turn);
+      }
+
+    }
+  }
+
+  &:hover .piece {
+    transform: translate(0, 0) rotate(0);
+  }
+  &.static .piece {
+    transform: translate(0, 0) rotate(0);
+  }
+
+}

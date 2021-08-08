@@ -45,8 +45,5 @@ body {
   &:hover .piece {
     transform: translate(0, 0) rotate(0);
   }
-  &.static .piece {
-    transform: translate(0, 0) rotate(0);
-  }
 
 }

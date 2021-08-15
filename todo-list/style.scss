@@ -1,0 +1,127 @@
+:root {
+  counter-reset: task remain;
+}
+
+body {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: #d9d9d9d9;
+}
+
+.todo-list {
+  width: 300px;
+  height: 350px;
+  display: grid;
+  grid-template-areas: "summary" "list";
+  grid-template-rows: 50px minmax(0, 1fr);
+
+  overflow: hidden;
+  background: #ffffff;
+  border-radius: 5px;
+  border: 1px solid #a1a1a1;
+
+  .list {
+    grid-area: list;
+    overflow: auto;
+
+    .todo {
+      counter-increment: task;
+      display: block;
+      padding: 10px;
+
+      .subject {
+        display: inline;
+        color: #000000;
+
+        transition: color .3s, background-size .3s;
+
+
+        background-image: linear-gradient(transparent calc(100% - 2px), #a1a1a1 2px);
+        background-repeat: no-repeat;
+        background-size: 0 50%;
+      }
+
+      .done {
+        display: inline-block;;
+        position: relative;
+        width: 15px;
+        height: 10px;
+
+        transition: width .3s;
+
+        &:after, &:before {
+          display: inline-block;
+          position: absolute;
+          content: '';
+
+          width: 10px;
+          height: 2px;
+          top: 3px;
+          left: 2px;
+
+          background: #a1a1a1;
+          transition: transform .3s;
+        }
+      }
+
+      .check {
+        position: absolute;
+        visibility: hidden;
+
+        &:not(:checked) {
+          counter-increment: remain;
+        }
+
+        &:checked ~ {
+          .done {
+            width: 20px;
+
+            &:after {
+              left: 0;
+            }
+
+            &:before {
+              left: 6px;
+
+              --degree: 90deg;
+            }
+
+            &:after, &:before {
+              background: #000000;
+              transform: rotate(calc(45deg - var(--degree, 0deg)));
+            }
+          }
+
+          .subject {
+            color: #a1a1a1;
+            background-size: 100% 50%;
+          }
+
+        }
+      }
+
+    }
+  }
+
+  .summary {
+    grid-area: summary;
+    display: flex;
+    align-items: center;
+    justify-content: space-evenly;
+    border-bottom: 1px solid #a1a1a1;
+    margin: 0 10px;
+
+    .task-count {
+      &:after {
+        content: counter(task);
+      }
+    }
+
+    .remain-count {
+      &:after {
+        content: counter(remain);
+      }
+    }
+  }
+}

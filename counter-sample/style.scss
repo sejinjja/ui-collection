@@ -1,0 +1,21 @@
+:root {
+  counter-reset: checked unchecked;
+}
+
+input[type=checkbox] {
+  counter-increment: unchecked;
+}
+
+input[type=checkbox]:checked {
+  counter-increment: checked;
+}
+
+.checked::before {
+  display: block;
+  content: counter(checked);
+}
+
+.unchecked::before {
+  display: block;
+  content: "[" counter(unchecked, upper-roman) "]";
+}

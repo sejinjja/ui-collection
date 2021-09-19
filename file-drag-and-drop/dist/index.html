@@ -1,0 +1,101 @@
+<!DOCTYPE html>
+<html ondrag="eventGuard(event)" ondragstart="eventGuard(event)" ondragend="eventGuard(event)" ondragover="eventGuard(event)" ondragenter="eventGuard(event)" ondragleave="eventGuard(event)" ondrop="eventGuard(event)">
+<head>
+  <title>Title</title>
+  <link rel="stylesheet" href="/style.97fcb138.css">
+  <script>function _createForOfIteratorHelper(o, allowArrayLike) { var it = typeof Symbol !== "undefined" && o[Symbol.iterator] || o["@@iterator"]; if (!it) { if (Array.isArray(o) || (it = _unsupportedIterableToArray(o)) || allowArrayLike && o && typeof o.length === "number") { if (it) o = it; var i = 0; var F = function F() {}; return { s: F, n: function n() { if (i >= o.length) return { done: true }; return { done: false, value: o[i++] }; }, e: function e(_e) { throw _e; }, f: F }; } throw new TypeError("Invalid attempt to iterate non-iterable instance.\nIn order to be iterable, non-array objects must have a [Symbol.iterator]() method."); } var normalCompletion = true, didErr = false, err; return { s: function s() { it = it.call(o); }, n: function n() { var step = it.next(); normalCompletion = step.done; return step; }, e: function e(_e2) { didErr = true; err = _e2; }, f: function f() { try { if (!normalCompletion && it.return != null) it.return(); } finally { if (didErr) throw err; } } }; }
+
+function _toConsumableArray(arr) { return _arrayWithoutHoles(arr) || _iterableToArray(arr) || _unsupportedIterableToArray(arr) || _nonIterableSpread(); }
+
+function _nonIterableSpread() { throw new TypeError("Invalid attempt to spread non-iterable instance.\nIn order to be iterable, non-array objects must have a [Symbol.iterator]() method."); }
+
+function _unsupportedIterableToArray(o, minLen) { if (!o) return; if (typeof o === "string") return _arrayLikeToArray(o, minLen); var n = Object.prototype.toString.call(o).slice(8, -1); if (n === "Object" && o.constructor) n = o.constructor.name; if (n === "Map" || n === "Set") return Array.from(o); if (n === "Arguments" || /^(?:Ui|I)nt(?:8|16|32)(?:Clamped)?Array$/.test(n)) return _arrayLikeToArray(o, minLen); }
+
+function _iterableToArray(iter) { if (typeof Symbol !== "undefined" && iter[Symbol.iterator] != null || iter["@@iterator"] != null) return Array.from(iter); }
+
+function _arrayWithoutHoles(arr) { if (Array.isArray(arr)) return _arrayLikeToArray(arr); }
+
+function _arrayLikeToArray(arr, len) { if (len == null || len > arr.length) len = arr.length; for (var i = 0, arr2 = new Array(len); i < len; i++) { arr2[i] = arr[i]; } return arr2; }
+
+var previewZone;
+window.addEventListener('DOMContentLoaded', function () {
+  previewZone = document.getElementById('previewZone');
+});
+
+function uploadFile(fileWrapper) {
+  var items = fileWrapper.items,
+      files = fileWrapper.files;
+
+  if (items) {
+    items = _toConsumableArray(items).filter(function (_ref) {
+      var kind = _ref.kind;
+      return kind === 'file';
+    }).map(function (item) {
+      return item.getAsFile();
+    });
+    files = items.length ? items : files;
+  }
+
+  files = _toConsumableArray(files).filter(function (_ref2) {
+    var type = _ref2.type;
+    return (type || '').indexOf('image') >= 0;
+  });
+
+  var _iterator = _createForOfIteratorHelper(files),
+      _step;
+
+  try {
+    for (_iterator.s(); !(_step = _iterator.n()).done;) {
+      var file = _step.value;
+      var fileReader = new FileReader();
+      fileReader.addEventListener('load', function () {
+        var image = document.createElement('img');
+        image.src = this.result;
+        image.classList.add('thumbnail');
+        previewZone.insertBefore(image, previewZone.firstChild); // previewZone.prependChild(image)
+      });
+      fileReader.readAsDataURL(file);
+    }
+  } catch (err) {
+    _iterator.e(err);
+  } finally {
+    _iterator.f();
+  }
+
+  fileWrapper.value = '';
+}
+
+function eventGuard(event) {
+  event.preventDefault();
+}
+
+function inputHandler(event) {
+  uploadFile(event.target);
+}
+
+function activeHover(event) {
+  eventGuard(event);
+  event.target.classList.add('active');
+}
+
+function inactiveHover(event) {
+  eventGuard(event);
+  event.target.classList.remove('active');
+}
+
+function dropHandler(event) {
+  inactiveHover(event);
+  uploadFile(event.dataTransfer);
+}</script>
+  <link rel="stylesheet" href="/style.97fcb138.css">
+<script src="/style.97fcb138.js"></script></head>
+<body>
+<div class="file-drag-and-drop">
+  <label class="drop-zone" ondragover="activeHover(event)" ondragenter="activeHover(event)" ondragleave="inactiveHover(event)" ondragend="inactiveHover(event)" ondrop="dropHandler(event)">
+    <input type="file" accept="*/*" multiple="" onchange="inputHandler(event)">
+    drop-zone
+  </label>
+  <div class="preview-zone" id="previewZone"></div>
+</div>
+</body>
+</html>

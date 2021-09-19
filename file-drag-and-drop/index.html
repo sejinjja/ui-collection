@@ -1,0 +1,79 @@
+<!DOCTYPE html>
+<html ondrag="eventGuard(event)"
+      ondragstart="eventGuard(event)"
+      ondragend="eventGuard(event)"
+      ondragover="eventGuard(event)"
+      ondragenter="eventGuard(event)"
+      ondragleave="eventGuard(event)"
+      ondrop="eventGuard(event)">
+<head>
+  <title>Title</title>
+  <link rel="stylesheet" href="./style.scss">
+  <script>
+      let previewZone
+      window.addEventListener('DOMContentLoaded', () => {
+          previewZone = document.getElementById('previewZone')
+      })
+
+      function uploadFile(fileWrapper) {
+          let {items, files} = fileWrapper
+          if (items) {
+              items = [...items].filter(({kind}) => kind === 'file')
+                  .map(item => item.getAsFile())
+              files = items.length ? items : files
+          }
+          files = [...files].filter(({type}) => (type || '').indexOf('image') >= 0)
+          for (const file of files) {
+              const fileReader = new FileReader()
+              fileReader.addEventListener('load', function () {
+                  const image = document.createElement('img')
+                  image.src = this.result
+                  image.classList.add('thumbnail')
+                  previewZone.insertBefore(image, previewZone.firstChild)
+                  // previewZone.prependChild(image)
+              })
+              fileReader.readAsDataURL(file)
+          }
+          fileWrapper.value = ''
+      }
+
+      function eventGuard(event) {
+          event.preventDefault()
+      }
+
+      function inputHandler(event) {
+          uploadFile(event.target)
+      }
+
+      function activeHover(event) {
+          eventGuard(event)
+          event.target.classList.add('active')
+      }
+
+      function inactiveHover(event) {
+          eventGuard(event)
+          event.target.classList.remove('active')
+      }
+
+      function dropHandler(event) {
+          inactiveHover(event)
+          uploadFile(event.dataTransfer)
+      }
+  </script>
+  <link rel="stylesheet" href="./style.scss">
+</head>
+<body>
+<div class="file-drag-and-drop">
+  <label class="drop-zone"
+         ondragover="activeHover(event)"
+         ondragenter="activeHover(event)"
+         ondragleave="inactiveHover(event)"
+         ondragend="inactiveHover(event)"
+         ondrop="dropHandler(event)">
+    <input type="file" accept="*/*" multiple onchange="inputHandler(event)">
+    drop-zone
+  </label>
+  <div class="preview-zone" id="previewZone"></div>
+</div>
+</body>
+</html>

@@ -1,0 +1,30 @@
+.drop-zone {
+  width: 300px;
+  height: 200px;
+  position: relative;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border: 2px dotted #5d5d5d;
+  border-radius: 5px;
+  margin-bottom: 10px;
+}
+.drop-zone input {
+  position: absolute;
+  opacity: 0;
+}
+.drop-zone.active {
+  background: #3d892d;
+  border: 2px solid #000000;
+}
+
+.preview-zone {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, 100px);
+  grid-gap: 10px;
+}
+.preview-zone .thumbnail {
+  width: 100%;
+}
+
+/*# sourceMappingURL=/style.97fcb138.css.map */

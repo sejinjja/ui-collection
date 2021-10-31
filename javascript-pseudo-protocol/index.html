@@ -1,0 +1,30 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>Title</title>
+    <link rel="stylesheet" href="./style.scss">
+    <meta name="viewport" content="width=device-width" />
+    <script type="text/javascript">
+      function foo() {
+          console.log(1)
+      }
+    </script>
+  </head>
+  <body style="height: 1000px;">
+  <div style="height: 300px"></div>
+
+  <a href="javascript:" onclick="foo()">javascript:</a>
+
+  <a href="#" onclick="foo();return false;">#</a>
+
+
+  <a onclick="foo();return false;">#</a>
+
+  <a href="javascript:void(0)" onclick="foo()">javascript:void(0)</a>
+
+
+  <a href="javascript:alert(2)" onclick="alert(1);return false;">test</a>
+
+
+  </body>
+</html>

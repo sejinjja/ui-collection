@@ -46,11 +46,13 @@
       }
 
       function activeHover(event) {
+          console.log('event.type', event.type)
           eventGuard(event)
           event.target.classList.add('active')
       }
 
       function inactiveHover(event) {
+          console.log('event.type', event.type)
           eventGuard(event)
           event.target.classList.remove('active')
       }
